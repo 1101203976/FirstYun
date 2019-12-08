@@ -1,26 +1,41 @@
 toastLog("！云端脚本运行成功！");
+"auto";
 
-var _toast_ = toast;
-toast = function(message){
-  _toast_(message);
-  sleep(200);
-}
+try {
+    auto();
+} catch (error) {
+    isAuto = false;
+    toast("请手动开启无障碍模式！");
+};
 
+auto.waitFor();
+auto.setMode("normal");
 
-if (className("android.widget.RelativeLayout").desc("闲鱼，未选中状态").exists()) {
-    咸鱼首页 = text("闲鱼").findOne().parent().parent();
-    咸鱼首页.click();
-    toastLog("已进入闲鱼首页");
-    运行();
-} else if (className("android.widget.RelativeLayout").desc("闲鱼，选中状态").exists()) {
-    toastLog("开始运行");
-    运行();
-} else if (desc("个人房源").exists()) {
-    toastLog("正在租房专题页面");
-    个人房源();
-} else if (desc("区域").exists()) {
-    toastLog("正在房源页面");
-    筛选();
+waitForPackage("com.taobao.idlefish");
+toastLog("进入咸鱼，等待开始运行");
+
+开始运行();
+
+function 开始运行() {
+    if (className("android.widget.RelativeLayout").desc("闲鱼，未选中状态").exists()) {
+        咸鱼首页 = text("闲鱼").findOne().parent().parent();
+        咸鱼首页.click();
+        toastLog("已进入闲鱼首页");
+        运行();
+    } else if (className("android.widget.RelativeLayout").desc("闲鱼，选中状态").exists()) {
+        toastLog("开始运行");
+        运行();
+    } else if (desc("个人房源").exists()) {
+        toastLog("正在租房专题页面");
+        个人房源();
+    } else if (desc("区域").exists()) {
+        toastLog("正在房源页面");
+        筛选();
+    } else {
+        sleep(1500);
+        toastLog("等待");
+        开始运行();
+    }
 }
 
 function 运行() {
@@ -113,7 +128,7 @@ function 聊一聊() {
         id("bar_left").findOne().click()
         sleep(900);
         className("android.view.View").text("返回").findOne().click();
-        sleep(900);
+        sleep(1500);
 
     } else {
         sleep(700);
@@ -125,6 +140,6 @@ function 聊一聊() {
         id("bar_left").findOne().click()
         sleep(900);
         className("android.view.View").text("返回").findOne().click();
-        sleep(700);
+        sleep(1500);
     };
 }
