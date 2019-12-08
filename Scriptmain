@@ -1,3 +1,130 @@
 toastLog("！云端脚本运行成功！");
-sleep(1000);
-exit();
+
+var _toast_ = toast;
+toast = function(message){
+  _toast_(message);
+  sleep(200);
+}
+
+
+if (className("android.widget.RelativeLayout").desc("闲鱼，未选中状态").exists()) {
+    咸鱼首页 = text("闲鱼").findOne().parent().parent();
+    咸鱼首页.click();
+    toastLog("已进入闲鱼首页");
+    运行();
+} else if (className("android.widget.RelativeLayout").desc("闲鱼，选中状态").exists()) {
+    toastLog("开始运行");
+    运行();
+} else if (desc("个人房源").exists()) {
+    toastLog("正在租房专题页面");
+    个人房源();
+} else if (desc("区域").exists()) {
+    toastLog("正在房源页面");
+    筛选();
+}
+
+function 运行() {
+    租房 = text("真实房东").findOne().parent();
+    租房.click();
+    个人房源();
+}
+
+function 个人房源() {
+    个人 = desc("个人房源").findOne().parent();
+    个人.click();
+    筛选();
+}
+
+function 筛选() {
+    筛选 = desc("筛选").findOne().parent();
+    筛选.click();
+    sleep(1000);
+    重置 = className("android.view.View").desc("重置").findOne().parent();
+    重置.click();
+    整租 = className("android.view.View").desc("整租").depth(18).findOne().parent();
+    整租.click();
+    个人 = className("android.view.View").desc("个人房东").depth(18).findOne().parent();
+    个人.click();
+    确定 = className("android.widget.ImageView").depth(13).findOne().parent();
+    确定.click();
+    sleep(800);
+    综合排序();
+}
+
+function 综合排序() {
+    if (className("android.view.View").desc("综合排序").exists()) {
+        toastLog("切换发布排序");
+        综合排序 = desc("综合排序").findOne().parent();
+        综合排序.click();
+        sleep(1000);
+        最新发布 = desc("最新发布").findOne().parent();
+        最新发布.click();
+        toastLog("开始找业主聊天");
+        sleep(700);
+        聊天();
+    } else if (className("android.view.View").desc("最新发布").exists()) {
+        最新发布 = desc("最新发布").findOne().parent();
+        最新发布.click();
+        sleep(1000);
+        最新发布 = desc("最新发布").findOnce(1).parent();
+        最新发布.click();
+        toastLog("开始找业主聊天");
+        sleep(700);
+        聊天();
+    }
+}
+
+function 聊天() {
+
+    for (let m = 0; m < 5; m++) {
+        for (i = 0; i < 10; i++) {
+            try {
+                个人房东 = desc("个人房东").visibleToUser().findOnce(i).parent().parent().parent().parent().parent();
+                个人房东.click();
+                while (!className("android.view.View").text("聊一聊").exists());
+                //className("android.view.View").text("返回").findOne().click();
+                sleep(200);
+                聊一聊();
+
+            } catch (error) {
+                toastLog(i);
+                toastLog("下滑一次");
+                sleep(500);
+                scrollDown();
+                break;
+            }
+        }
+
+    }
+    gesture(800, [411, 1270], [513, 1096], [522, 1342], [787, 811])
+    sleep(500);
+    scrollDown();
+    聊天();
+}
+
+function 聊一聊() {
+    聊 = className("android.view.View").text("聊一聊");
+    聊.click();
+    while (!id("right_image_extra").exists());
+    toastLog("1");
+    sleep(800);
+    if (desc("我的头像").exists()) {
+        toastLog("已经发送过了，准备返回");
+        id("bar_left").findOne().click()
+        sleep(900);
+        className("android.view.View").text("返回").findOne().click();
+        sleep(900);
+
+    } else {
+        sleep(700);
+        setText("你好，我是南京贝壳链家的工作人员，请问您方便告诉我一下这个房子的具体地址和常用联系方式吗，我可以帮您挂到我们贝壳链家网哦，有客户就会直接跟您联系的");
+        sleep(500);
+        id("chat_send_button").findOne().click();
+        toastLog("发送成功");
+        sleep(900);
+        id("bar_left").findOne().click()
+        sleep(900);
+        className("android.view.View").text("返回").findOne().click();
+        sleep(700);
+    };
+}
