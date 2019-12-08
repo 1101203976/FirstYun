@@ -1,0 +1,28 @@
+toastLog("脚本运行成功");
+sleep(1000);
+var 帖子地址="6133558654";
+//var 设备代码=device.getIMEI();
+var 设备代码="10001";
+var 验证信息=http.get("https://tieba.baidu.com/p/"+帖子地址);//可以从百度贴吧获取
+log(验证信息.body);
+验证信息=验证信息.body.string();
+//log(验证信息);
+var 验证地址= 验证信息.indexOf(设备代码);
+if (验证地址 >-1){
+    toastLog("脚本启动成功"+验证地址);
+}else{
+    setClip(设备代码);
+    toastLog("脚本运行失败 1 次");
+    for(i=0;i<10;i++){
+        
+        验证信息=http.get("https://tieba.baidu.com/p/"+帖子地址+"?pn="+i);
+        验证信息=验证信息.body.string();
+        log("你已经用不了脚本了，要么别试了,已经第 "+i+" 次");
+        sleep(200);
+        if(i>8){
+            log("运行失败 "+i);
+            sleep(5000);
+            exit();
+        };
+    };
+};
