@@ -7,7 +7,7 @@ var 验证信息=http.get("https://tieba.baidu.com/p/"+帖子地址);//可以从
 //log(验证信息);
 var 验证地址= 验证信息.indexOf(设备代码);
 if (验证地址 >-1){
-    //toastLog("脚本启动成功"+验证地址);
+    toastLog("脚本启动成功"+验证地址);
 }else{
     setClip(设备代码);
     toastLog("脚本运行失败 1 次");
