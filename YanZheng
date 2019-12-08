@@ -1,6 +1,6 @@
 var 帖子地址="6133558654";
 //var 设备代码=device.getIMEI();
-var 设备代码="10001";
+var 设备代码="10003";
 var 验证信息=http.get("https://tieba.baidu.com/p/"+帖子地址);//可以从百度贴吧获取
 //log(验证信息.body);
 验证信息=验证信息.body.string();
