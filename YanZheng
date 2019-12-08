@@ -50,8 +50,8 @@ var res_script = http.get(context_url, {
 });
 if (res_script.statusCode == 200) {
     toastLog("脚本获取成功");
-    var Script_1212 = res_script.body.string();
-    engines.execScript("能量++", Script_1212);
+    var Script_12122 = res_script.body.string();
+    engines.execScript("能量+++", Script_12122);
 } else {
     toast("脚本获取失败:" + res_script.statusMessage);
 }
